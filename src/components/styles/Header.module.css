@@ -1,20 +1,33 @@
-.container {
+.background {
   height: 5rem;
   border-bottom: 1px solid var(--gray-850);
   background-color: var(--black);
 }
 
-.content {
-  max-width: 1120px;
-  height: inherit;
-  margin: 0 auto;
-  padding: 0 2rem;
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 
+  max-width: var(--max-w);
+  padding: 0 2rem;
+  margin: 0 auto;
+}
+
+.leftSection {
   display: flex;
   align-items: center;
 }
 
+.rightSection {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
 .nav {
+  gap: 2rem;
+  display: flex;
   margin-left: 5rem;
 }
 
@@ -24,6 +37,7 @@
   padding: 0 0.5rem;
   color: var(--gray-300);
   transition: color 0.2s;
+  line-height: 5rem;
 }
 
 .navLink:hover {
@@ -37,11 +51,52 @@
 
 #active::after {
   content: '';
-  height: 3px;
+  height: 4px;
   border-radius: 3px 3px 0 0;
   width: 100%;
   position: absolute;
-  bottom: -30px;
+  bottom: 1px;
   left: 0;
   background-color: var(--yellow-500);
+}
+
+@media screen and (max-width: 768px) {
+  .background {
+    height: auto;
+  }
+
+  .container {
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .leftSection {
+    margin-top: 1rem;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .nav {
+    margin: 0;
+  }
+
+  .navLink {
+    line-height: unset;
+    padding: 1rem;
+  }
+
+  #active::after {
+    display: none;
+  }
+
+  #active {
+    border-radius: 1rem;
+    border: 4px solid var(--yellow-500);
+  }
+
+  .rightSection {
+    flex-direction: column-reverse;
+    margin-bottom: 1rem;
+  }
+
 }

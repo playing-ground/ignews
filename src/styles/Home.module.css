@@ -1,0 +1,44 @@
+.container {
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2rem 2rem;
+  max-width: var(--max-w);
+  height: 100%;
+}
+
+.welcome {
+  font-size: 1.5rem;
+  font-weight: 900;
+}
+
+.title {
+  font-size: 4.5rem;
+  line-height: 4.5rem;
+  font-weight: 900;
+  margin-top: 2.5rem;
+}
+
+.title>span {
+  color: var(--cyan-500);
+}
+
+.description {
+  font-size: 1.5rem;
+  line-height: 2.25rem;
+  margin-top: 1.5rem;
+}
+
+.description>span {
+  color: var(--cyan-500);
+  font-weight: bold;
+}
+
+@media screen and (max-width: 768px) {
+  .container {
+    display: flex;
+    gap: 5rem;
+    flex-direction: column;
+  }
+}
