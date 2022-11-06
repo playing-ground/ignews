@@ -4,7 +4,8 @@ import Layout from '../components/Layout'
 import '../styles/globals.css'
 
 const roboto = Roboto({
-  weight: ['400', '500', '700', '900']
+  weight: ['400', '500', '700', '900'],
+  subsets: ['latin']
 })
 
 export default function App({ Component, pageProps }: AppProps) {

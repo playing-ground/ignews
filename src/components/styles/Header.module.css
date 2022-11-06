@@ -71,18 +71,23 @@
   }
 
   .leftSection {
+    width: 100%;
     margin-top: 1rem;
     flex-direction: column;
     gap: 2rem;
   }
 
   .nav {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
     margin: 0;
   }
 
   .navLink {
+    display: inline-block;
     line-height: unset;
-    padding: 1rem;
+    padding: 1rem 5rem;
   }
 
   #active::after {
@@ -95,7 +100,8 @@
   }
 
   .rightSection {
-    flex-direction: column-reverse;
+    width: 100%;
+    justify-content: space-between;
     margin-bottom: 1rem;
   }
 
