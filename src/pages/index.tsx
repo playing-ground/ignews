@@ -32,7 +32,13 @@ export default function Home({ product }: HomeProps) {
           <SubscribeButton priceId={product.priceId} />
         </section>
         <div className={styles.rightSection}>
-          <Image src="/images/avatar.svg" alt="" width={450} height={450} />
+          <Image
+            src="/images/avatar.svg"
+            alt=""
+            width={450}
+            height={450}
+            priority
+          />
         </div>
       </main>
     </>
