@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import Link from 'next/link'
 import logo from '../../public/images/logo.svg'
 import SignInButton from './SignInButton'
 
@@ -11,9 +12,9 @@ export default function Header() {
     <header className={styles.background}>
       <div className={styles.container}>
         <div className={styles.leftSection}>
-          <a href="">
+          <Link href={'/'}>
             <Image className='logo' src={logo} alt="IgNews" />
-          </a>
+          </Link>
           <nav className={styles.nav}>
             <a id={styles.active} href="" className={styles.navLink}>Home</a>
             <a href="" className={styles.navLink}>Posts</a>

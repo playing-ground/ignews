@@ -7,11 +7,10 @@ export default async function checkout(req: NextApiRequest, res: NextApiResponse
   if (req.method === 'POST') {
     const session = await getSession({ req })
 
-    const user = await db.user.findFirst({ where: { email: session?.user?.email as string } })
+    const user = await db.user.findUnique({ where: { email: session?.user?.email as string } })
 
     let customerId = user?.stripeId
 
-    console.log(`USER: ${user} \n CUSTOMERID: ${customerId}`)
     if (!customerId) {
       const stripeCustomer = await stripe.customers.create({
         email: session?.user?.email as string

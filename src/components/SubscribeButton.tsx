@@ -13,13 +13,9 @@ export default function SubscribeButton({ priceId }: SubscribeButtonProps) {
   async function handleSubscribe() {
     if (!session) {
       await signIn('auth0')
-      await stripeRedirect()
-    } else {
-      await stripeRedirect()
+      return
     }
-  }
 
-  async function stripeRedirect() {
     try {
       const response = await api.post('/checkout')
       const { sessionId } = response.data
