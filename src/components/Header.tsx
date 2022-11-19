@@ -16,8 +16,8 @@ export default function Header() {
             <Image className='logo' src={logo} alt="IgNews" />
           </Link>
           <nav className={styles.nav}>
-            <a id={styles.active} href="" className={styles.navLink}>Home</a>
-            <a href="" className={styles.navLink}>Posts</a>
+            <Link id={styles.active} href="/" className={styles.navLink}>Home</Link>
+            <Link href="/posts" className={styles.navLink}>Posts</Link>
           </nav>
         </div>
         <div className={styles.rightSection}>
