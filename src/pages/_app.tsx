@@ -3,7 +3,7 @@ import { Roboto } from '@next/font/google'
 import Layout from '../components/Layout'
 import { SessionProvider } from 'next-auth/react'
 
-import './styles/globals.css'
+import '../styles/globals.css'
 
 const roboto = Roboto({
   weight: ['400', '500', '700', '900'],

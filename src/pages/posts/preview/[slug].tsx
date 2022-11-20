@@ -1,12 +1,15 @@
 import { gql } from "graphql-request"
-import { GetServerSideProps } from "next"
-import { getSession } from "next-auth/react"
+import { GetStaticProps } from "next"
+import { useSession } from "next-auth/react"
 import Head from "next/head"
-import { hygraph } from "../../services/hygraph"
+import Link from "next/link"
+import { useRouter } from "next/router"
+import { useEffect, useState } from "react"
+import { hygraph } from "../../../services/hygraph"
 
-import styles from '../../styles/Post.module.css'
+import styles from '../../../styles/Post.module.css'
 
-type PostProps = {
+type PostPreviewProps = {
   data: {
     title: string
     slug: string
@@ -16,8 +19,23 @@ type PostProps = {
   }
 }
 
-export default function Post({ data }: PostProps) {
+export default function PostPreview({ data }: PostPreviewProps) {
+  const [showChild, setShowChild] = useState(false);
   const title = `${data.title} &#8226; ig.news`
+  const session = useSession()
+  const router = useRouter()
+
+  useEffect(() => {
+    setShowChild(true);
+    if (session.data?.activeSubscription) {
+      router.push('/')
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [session])
+
+  if (!showChild) {
+    return null;
+  }
 
   return (
     <>
@@ -30,9 +48,13 @@ export default function Post({ data }: PostProps) {
           <h1 className={styles.title}>{data.title}</h1>
           <time className={styles.date}>{data.publishedAt}</time>
           <div
-            className={styles.content}
+            className={`${styles.content} ${styles.previewContent}`}
             dangerouslySetInnerHTML={{ __html: data.content }}
           ></div>
+          <Link href='/' className={styles.continueReading}>
+            Would you like to continue reading?
+            <span>Subscribe now 🤗</span>
+          </Link>
         </article>
       </main>
     </>
@@ -48,18 +70,15 @@ type Post = {
   content: { html: string }
 }
 
-export const getServerSideProps: GetServerSideProps = async ({ req, params }) => {
-  const session = await getSession({ req })
-  const slug = params?.slug?.toString()
-
-  if (!session?.activeSubscription) {
-    return {
-      redirect: {
-        destination: `posts/preview/${slug}`,
-        permanent: false,
-      }
-    }
+export const getStaticPaths = () => {
+  return {
+    paths: [],
+    fallback: 'blocking'
   }
+}
+
+export const getStaticProps: GetStaticProps = async ({ params }) => {
+  const slug = params?.slug?.toString()
 
   const query = gql`
     {
@@ -80,7 +99,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, params }) =>
     id: post?.id || '',
     title: post?.title || '',
     slug: post?.slug || '',
-    content: post?.content?.html || '',
+    content: post?.content?.html.slice(0, 2000) || '',
     publishedAt: new Date(post?.publishedAt).toLocaleDateString('pt-BR', {
       day: '2-digit',
       month: 'long',

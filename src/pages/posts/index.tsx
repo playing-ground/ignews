@@ -4,7 +4,7 @@ import Head from 'next/head'
 import Link from 'next/link'
 import { hygraph } from '../../services/hygraph'
 
-import styles from '../styles/Posts.module.css'
+import styles from '../../styles/Posts.module.css'
 
 type PostProps = {
   posts: [{
