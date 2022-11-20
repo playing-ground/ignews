@@ -4,7 +4,7 @@ import Image from 'next/image'
 import SubscribeButton from '../components/SubscribeButton'
 import { stripe } from '../services/stripe'
 
-import styles from '../styles/Home.module.css'
+import styles from './styles/Home.module.css'
 
 type HomeProps = {
   product: {

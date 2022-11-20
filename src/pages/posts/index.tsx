@@ -1,10 +1,22 @@
 import { gql } from 'graphql-request'
 import { GetStaticProps } from 'next'
 import Head from 'next/head'
+import Link from 'next/link'
 import { hygraph } from '../../services/hygraph'
-import styles from '../../styles/Posts.module.css'
 
-export default function Posts() {
+import styles from '../styles/Posts.module.css'
+
+type PostProps = {
+  posts: [{
+    id: string
+    title: string
+    slug: string
+    excerpt: string
+    publishedAt: string
+  }]
+}
+
+export default function Posts({ posts }: PostProps) {
   return (
     <>
       <Head>
@@ -13,28 +25,26 @@ export default function Posts() {
 
       <main className={styles.container}>
         <div className={styles.posts}>
-          <a href="">
-            <time>12 de dezembro de 2022</time>
-            <strong>Lorem ipsum dolor sit amet consectetur adipisicing elit. Aperiam, odio?</strong>
-            <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Labore animi eos consequuntur iste corporis. Ratione at veniam maxime quam quia.</p>
-          </a>
-
-          <a href="">
-            <time>12 de dezembro de 2022</time>
-            <strong>Lorem ipsum dolor sit amet consectetur adipisicing elit. Aperiam, odio?</strong>
-            <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Labore animi eos consequuntur iste corporis. Ratione at veniam maxime quam quia.</p>
-          </a>
-
-          <a href="">
-            <time>12 de dezembro de 2022</time>
-            <strong>Lorem ipsum dolor sit amet consectetur adipisicing elit. Aperiam, odio?</strong>
-            <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Labore animi eos consequuntur iste corporis. Ratione at veniam maxime quam quia.</p>
-          </a>
+          {posts.map(post => (
+            <Link key={post.id} href={`/posts/${post.slug}`}>
+              <time>{post.publishedAt}</time>
+              <strong>{post.title}</strong>
+              <p>{post.excerpt}</p>
+            </Link>
+          ))}
         </div>
       </main>
     </>
 
   )
+}
+
+type Post = {
+  title: string
+  slug: string
+  id: string
+  publishedAt: string
+  content: { text: string }
 }
 
 export const getStaticProps: GetStaticProps = async () => {
@@ -45,19 +55,30 @@ export const getStaticProps: GetStaticProps = async () => {
         title
         slug
         id
-        createdAt
+        publishedAt
         content {
-          markdown
+          text 
         }
       }
     }
   `
-  const response = await data.request(query)
-
-  console.log(response)
+  const response = await data.request<{ posts: Post[] }>(query)
+  const posts = response.posts.map((post) => {
+    return {
+      id: post.id,
+      title: post.title,
+      slug: post.slug,
+      excerpt: (post.content.text.substring(0, 500) + '...').replace(/\\n/g, '') ?? '',
+      publishedAt: new Date(post.publishedAt).toLocaleDateString('pt-BR', {
+        day: '2-digit',
+        month: 'long',
+        year: 'numeric'
+      })
+    }
+  })
 
   return {
-    props: {}
+    props: { posts }
   }
 
 }
